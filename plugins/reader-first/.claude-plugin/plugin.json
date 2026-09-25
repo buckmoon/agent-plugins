@@ -1,6 +1,6 @@
 {
   "name": "reader-first",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "読み手と次の行動を先に決めて書くスキルと、出す前に読み手の立場の別のAIが試し読みするフック",
   "author": {
     "name": "buckmoon"

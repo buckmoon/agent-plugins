@@ -1,0 +1,28 @@
+{
+  "description": "reader-first の試し読み。下書きへの書き込みと GitHub への投稿の直前に読み手の立場で読み、応答の終わりに下書きを通したかを記録する",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|mcp__github__add_issue_comment|mcp__github__add_reply_to_pull_request_comment|mcp__github__create_pull_request|mcp__github__update_pull_request|mcp__github__issue_write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/claude_code.py\" pre",
+            "timeout": 180
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/claude_code.py\" stop",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

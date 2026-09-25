@@ -1,0 +1,12 @@
+{
+  "name": "reader-first",
+  "version": "0.1.0",
+  "description": "読み手と次の行動を先に決めて書くスキルと、出す前に読み手の立場の別のAIが試し読みするフック",
+  "author": {
+    "name": "buckmoon"
+  },
+  "homepage": "https://github.com/buckmoon/agent-plugins",
+  "repository": "https://github.com/buckmoon/agent-plugins",
+  "license": "MIT",
+  "keywords": ["writing", "japanese", "review", "hooks"]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "buckmoon",
+  "owner": {
+    "name": "buckmoon"
+  },
+  "metadata": {
+    "description": "buckmoon が公開している Claude Code と Codex 向けのプラグイン"
+  },
+  "plugins": [
+    {
+      "name": "reader-first",
+      "description": "読み手と次の行動を先に決めて書くスキルと、出す前に読み手の立場の別のAIが試し読みするフック",
+      "version": "0.1.0",
+      "author": {
+        "name": "buckmoon"
+      },
+      "source": "./plugins/reader-first"
+    }
+  ]
+}

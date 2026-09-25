@@ -13,7 +13,7 @@
   "hooks": "./hooks/codex-hooks.json",
   "interface": {
     "displayName": "reader-first",
-    "shortDescription": "読み手が次の行動を取れる文章を書き、出す前に試し読みする",
+    "shortDescription": "読み終えたら次に何をすればよいか分かる文章を書き、出す前に試し読みする",
     "longDescription": "長い報告・第三者に渡す文面・残す文書を書く前に、読み手の手持ちと読み終えた後の行動を決めさせるスキルと、下書きを読み手の立場の別のAIに読ませて、引っかかる点があれば1回だけ書き込みを止めて質問を返すフック。日本語話者向け。",
     "developerName": "buckmoon",
     "category": "Productivity",

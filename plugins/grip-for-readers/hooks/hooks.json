@@ -1,5 +1,5 @@
 {
-  "description": "reader-first の試し読み。下書きへの書き込みと GitHub への投稿の直前に読み手の立場で読み、応答の終わりに下書きを通したかを記録する",
+  "description": "grip-for-readers の試し読み。下書きへの書き込みと GitHub への投稿の直前に読み手の立場で読み、応答の終わりに下書きを通したかを記録する",
   "hooks": {
     "PreToolUse": [
       {

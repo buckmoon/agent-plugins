@@ -8,9 +8,9 @@ host として渡す。host は claude_code.py と codex.py にある。
   stop  依頼者への長い文章が下書きを経ずに出たかを記録するだけ（止めない）
 
 読み手は下書きのファイル名の先頭で決まる（slack-… / email-… / github-… / doc-…、それ以外は依頼者）。
-「そのまま出すか、下書きにするか」の判断は reader-first スキルが行う。
+「そのまま出すか、下書きにするか」の判断は grip-for-readers スキルが行う。
 同じ依頼（ターン）で止めるのは種類ごとに1回だけ。失敗したら止めない（fail open）。
-無効化: 環境変数 COLD_READ_GATE=0
+無効化: 環境変数 GRIP_FOR_READERS=0
 """
 import hashlib
 import json
@@ -18,11 +18,11 @@ import os
 import sys
 import time
 
-MIN_CHARS = int(os.environ.get('COLD_READ_GATE_MIN_CHARS', '400'))
+MIN_CHARS = int(os.environ.get('GRIP_FOR_READERS_MIN_CHARS', '400'))
 RECORD_LIMIT = 30000
 TIMEOUT_SEC = 150
-CHILD_ENV = 'COLD_READ_GATE_CHILD'
-DRAFT_MARK = '/reader-first-drafts/'  # 下書きは一時フォルダの下の reader-first-drafts/ に置く
+CHILD_ENV = 'GRIP_FOR_READERS_CHILD'
+DRAFT_MARK = '/grip-for-readers-drafts/'  # 下書きは一時フォルダの下の grip-for-readers-drafts/ に置く
 DRAFT_HEAD = 200  # 下書きを通したかは、下書きの冒頭のこの字数が報告に含まれるかで見る
 
 NOT_IN_CHAT = 'エージェントと依頼者のチャットのやり取りは見ていません。'
@@ -130,13 +130,13 @@ def should_block(verdict):
 def block_reason(verdict, via, reader):
     who = READER_NAME[reader]
     lines = [f'送る前の試し読みで、{who}の立場から次の点に引っかかりました。',
-             '作業の文脈を持つあなたが質問に答える形で直してください（reader-first スキルに従う）。']
+             '作業の文脈を持つあなたが質問に答える形で直してください（grip-for-readers スキルに従う）。']
     if via == 'post':
         lines.append('本文を直してから、もう一度投稿してください。')
     elif reader == 'requester':
-        lines.append('直した版を下書きフォルダ（reader-first-drafts）に新しいファイル名で書き直してから、その内容をチャットに出してください。')
+        lines.append('直した版を下書きフォルダ（grip-for-readers-drafts）に新しいファイル名で書き直してから、その内容をチャットに出してください。')
     else:
-        lines.append(f'直した版を下書きフォルダ（reader-first-drafts）に、先頭が「{reader}-」の新しいファイル名で書き直してから、本来の送り先や保存先に使ってください。')
+        lines.append(f'直した版を下書きフォルダ（grip-for-readers-drafts）に、先頭が「{reader}-」の新しいファイル名で書き直してから、本来の送り先や保存先に使ってください。')
     lines += ['止めるのはこの1回だけです。答えられない質問は「まだ分かっていないこと」として残してください。', '']
     if not verdict.get('reply_clear', True):
         lines.append(f'- 読んだ直後に、{who}が何をすればよいか分かりません。冒頭と最後で、返してほしいことをはっきり書いてください。')
@@ -155,7 +155,7 @@ def child_env():
 
 
 def gate_dir(host):
-    return os.environ.get('COLD_READ_GATE_HOME') or os.path.expanduser(host.HOME)
+    return os.environ.get('GRIP_FOR_READERS_HOME') or os.path.expanduser(host.HOME)
 
 
 def log(host, entry):
@@ -256,7 +256,7 @@ def stop(inp, host):
 
 
 def main(argv, host):
-    if os.environ.get('COLD_READ_GATE') == '0' or os.environ.get(CHILD_ENV):
+    if os.environ.get('GRIP_FOR_READERS') == '0' or os.environ.get(CHILD_ENV):
         return 0
     try:
         inp = json.load(sys.stdin)

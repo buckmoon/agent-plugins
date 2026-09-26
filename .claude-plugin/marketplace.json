@@ -8,13 +8,13 @@
   },
   "plugins": [
     {
-      "name": "reader-first",
+      "name": "grip-for-readers",
       "description": "読み手と次の行動を先に決めて書くスキルと、出す前に読み手の立場の別のAIが試し読みするフック",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "author": {
         "name": "buckmoon"
       },
-      "source": "./plugins/reader-first"
+      "source": "./plugins/grip-for-readers"
     }
   ]
 }

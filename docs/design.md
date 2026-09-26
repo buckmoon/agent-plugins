@@ -1,6 +1,6 @@
-# reader-first の設計
+# Grip for Readers の設計
 
-この文書は、reader-first のスキルと試し読みフックが、なぜ今の形になっているかを説明する。スキルやフックの振る舞いを変える前に読み、変えてよいかを判断する材料にしてほしい。版 0.1.0（2026年9月）時点の内容で、下の数字はどれも小さな実験から出たものである。入れ方は [install-claude.md](install-claude.md) と [install-codex.md](install-codex.md)、ログと費用は [privacy-and-cost.md](privacy-and-cost.md) にある。
+この文書は、grip-for-readers のスキルと試し読みフックが、なぜ今の形になっているかを説明する。スキルやフックの振る舞いを変える前に読み、変えてよいかを判断する材料にしてほしい。版 0.1.0（2026年9月）時点の内容で、下の数字はどれも小さな実験から出たものである。入れ方は [install-claude.md](install-claude.md) と [install-codex.md](install-codex.md)、ログと費用は [privacy-and-cost.md](privacy-and-cost.md) にある。
 
 ## 解きたい問題
 
@@ -26,7 +26,7 @@ AIが書いた報告は、書いたAIにとっては分かりやすくても、�
 
 どちらかに問題があれば、フックは書き込みや投稿を止め、質問を書き手のAIに返す。
 
-試し読み役は、利用者が使っているAIのコマンドを、フックから1回呼び出して動かす。Claude Code では `claude -p`、Codex では `codex exec` を使う。モデルは、Claude Code では利用者の既定のもの、Codex では Codex の既定のもの（利用者の config.toml の設定は使わない）で、環境変数 `COLD_READ_GATE_MODEL` にモデル名を入れると変えられる。だから、試し読みの利用量は利用者自身のアカウントから減る。
+試し読み役は、利用者が使っているAIのコマンドを、フックから1回呼び出して動かす。Claude Code では `claude -p`、Codex では `codex exec` を使う。モデルは、Claude Code では利用者の既定のもの、Codex では Codex の既定のもの（利用者の config.toml の設定は使わない）で、環境変数 `GRIP_FOR_READERS_MODEL` にモデル名を入れると変えられる。だから、試し読みの利用量は利用者自身のアカウントから減る。
 
 ### 読み手の種類
 
@@ -40,7 +40,7 @@ AIが書いた報告は、書いたAIにとっては分かりやすくても、�
 | `email-` | メールの受け手 | 下書きの本文だけ |
 | `doc-` | 後日その文書を開く人 | 下書きの本文だけ |
 
-依頼者以外の読み手は、AIと依頼者のやり取りを見ていないので、本文だけを渡す。下書きを置く場所と書き方は、スキルの [drafts.md](../plugins/reader-first/skills/reader-first/drafts.md) にある。
+依頼者以外の読み手は、AIと依頼者のやり取りを見ていないので、本文だけを渡す。下書きを置く場所と書き方は、スキルの [drafts.md](../plugins/grip-for-readers/skills/grip-for-readers/drafts.md) にある。
 
 ## 直すのは元の書き手
 

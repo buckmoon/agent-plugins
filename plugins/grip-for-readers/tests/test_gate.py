@@ -45,7 +45,7 @@ class VerdictTest(unittest.TestCase):
         self.assertIn('案Aとは？', r)
         self.assertIn('何をすればよいか', r)
         self.assertIn('drafts', r)
-        self.assertIn('reader-first', r)
+        self.assertIn('grip-for-readers', r)
         self.assertIn('チャット', r)
         self.assertIn('もう一度投稿', g.block_reason({'reply_clear': True, 'stuck': []}, 'post', 'github'))
 
@@ -72,22 +72,23 @@ class DraftPathTest(unittest.TestCase):
                              ('memo-1.md', 'requester')]:
             self.assertEqual(g.draft_reader('/d/' + name), reader, name)
 
-    def test_drafts_live_in_reader_first_drafts_anywhere(self):
-        self.assertTrue(g.is_draft_path('/var/folders/x/T/reader-first-drafts/a.md'))
-        self.assertTrue(g.is_draft_path('/tmp/reader-first-drafts/slack-1.md'))
-        self.assertTrue(g.is_draft_path('reader-first-drafts/a.md'))
-        self.assertTrue(g.is_draft_path('C:\\Temp\\reader-first-drafts\\a.md'))
+    def test_drafts_live_in_grip_for_readers_drafts_anywhere(self):
+        self.assertTrue(g.is_draft_path('/var/folders/x/T/grip-for-readers-drafts/a.md'))
+        self.assertTrue(g.is_draft_path('/tmp/grip-for-readers-drafts/slack-1.md'))
+        self.assertTrue(g.is_draft_path('grip-for-readers-drafts/a.md'))
+        self.assertTrue(g.is_draft_path('C:\\Temp\\grip-for-readers-drafts\\a.md'))
         self.assertFalse(g.is_draft_path('/home/u/src/a.md'))
-        self.assertFalse(g.is_draft_path('/home/u/reader-first-drafts-old/a.md'))
+        self.assertFalse(g.is_draft_path('/home/u/grip-for-readers-drafts-old/a.md'))
         self.assertFalse(g.is_draft_path(None))
+        self.assertFalse(g.is_draft_path('/tmp/reader-first-drafts/a.md'))  # 旧名の下書きフォルダは対象外
 
 
 class DraftedTest(unittest.TestCase):
     def setUp(self):
-        os.environ['COLD_READ_GATE_HOME'] = tempfile.mkdtemp()
+        os.environ['GRIP_FOR_READERS_HOME'] = tempfile.mkdtemp()
 
     def tearDown(self):
-        del os.environ['COLD_READ_GATE_HOME']
+        del os.environ['GRIP_FOR_READERS_HOME']
 
     def test_report_matching_the_sessions_last_requester_draft_counts_as_drafted(self):
         g.remember_draft(FakeHost, 's1', '依頼者への報告')
@@ -104,22 +105,22 @@ class DraftedTest(unittest.TestCase):
 class LogTest(unittest.TestCase):
     def test_entries_carry_a_readable_local_time(self):
         home = tempfile.mkdtemp()
-        os.environ['COLD_READ_GATE_HOME'] = home
+        os.environ['GRIP_FOR_READERS_HOME'] = home
         try:
             g.log(FakeHost, {'ts': 0, 'mode': 'pre'})
             with open(os.path.join(home, 'log.jsonl')) as f:
                 entry = json.loads(f.readline())
             self.assertRegex(entry['at'], r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$')
         finally:
-            del os.environ['COLD_READ_GATE_HOME']
+            del os.environ['GRIP_FOR_READERS_HOME']
 
 
 class RememberInPreTest(unittest.TestCase):
     def setUp(self):
-        os.environ['COLD_READ_GATE_HOME'] = tempfile.mkdtemp()
+        os.environ['GRIP_FOR_READERS_HOME'] = tempfile.mkdtemp()
 
     def tearDown(self):
-        del os.environ['COLD_READ_GATE_HOME']
+        del os.environ['GRIP_FOR_READERS_HOME']
 
     def test_requester_drafts_are_remembered_even_when_short(self):
         class Host(FakeHost):

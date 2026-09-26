@@ -5,10 +5,10 @@
   },
   "plugins": [
     {
-      "name": "reader-first",
+      "name": "grip-for-readers",
       "source": {
         "source": "local",
-        "path": "./plugins/reader-first"
+        "path": "./plugins/grip-for-readers"
       },
       "policy": {
         "installation": "AVAILABLE",

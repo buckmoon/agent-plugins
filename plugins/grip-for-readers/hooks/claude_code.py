@@ -14,7 +14,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gate  # noqa: E402
 
-HOME = '~/.claude/cold-read-gate'
+HOME = '~/.claude/grip-for-readers'
 INTERNAL_PREFIXES = ('<task-notification>', '<system-reminder>', 'Another Claude session sent a message',
                      '<command-name>', '<local-command', 'Caveat:', 'Stop hook feedback:')
 
@@ -71,7 +71,7 @@ def target_of(tool_name, tool_input):
 def ask(system_prompt, body):
     cmd = ['claude', '-p', '--no-session-persistence', '--tools', '',
            '--system-prompt', system_prompt, '--output-format', 'json']
-    model = os.environ.get('COLD_READ_GATE_MODEL')
+    model = os.environ.get('GRIP_FOR_READERS_MODEL')
     if model:
         cmd += ['--model', model]
     p = subprocess.run(cmd, input=body, capture_output=True, text=True, timeout=gate.TIMEOUT_SEC,

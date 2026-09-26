@@ -10,7 +10,7 @@ import helpers  # noqa: F401
 import codex as host
 import gate as g
 
-D = '/var/folders/x/T/reader-first-drafts/'
+D = '/var/folders/x/T/grip-for-readers-drafts/'
 
 
 def patch(*sections):
@@ -54,7 +54,7 @@ class TargetTest(unittest.TestCase):
         self.assertEqual(host.target_of('apply_patch', {'command': p}), ('draft', 'slack', '# 見出し\n本文'))
 
     def test_relative_draft_path_and_other_files_in_the_same_patch(self):
-        p = patch('*** Update File: src/a.py\n@@\n-x\n+y', add('reader-first-drafts/20260925-1430.md', '報告'))
+        p = patch('*** Update File: src/a.py\n@@\n-x\n+y', add('grip-for-readers-drafts/20260925-1430.md', '報告'))
         self.assertEqual(host.target_of('apply_patch', {'command': p}), ('draft', 'requester', '報告'))
 
     def test_edits_to_existing_drafts_and_other_files_are_not_targets(self):
@@ -98,7 +98,7 @@ class AskTest(unittest.TestCase):
             return mock.Mock(returncode=0, stdout='', stderr='')
 
         with mock.patch.object(host.subprocess, 'run', fake_run), \
-                mock.patch.dict(os.environ, {'COLD_READ_GATE_MODEL': 'm1'}):
+                mock.patch.dict(os.environ, {'GRIP_FOR_READERS_MODEL': 'm1'}):
             raw = host.ask('指示"と改行\nを含む', '# 読む文章\n\n本文')
         self.assertEqual(json.loads(raw)['reply_clear'], True)
         cmd, kw = calls[0]
@@ -118,12 +118,17 @@ class AskTest(unittest.TestCase):
                 host.ask('p', 'b')
 
 
+class NamesTest(unittest.TestCase):
+    def test_records_live_under_the_plugin_name(self):
+        self.assertEqual(host.HOME, '~/.codex/grip-for-readers')
+
+
 class OutputTest(unittest.TestCase):
     def setUp(self):
-        os.environ['COLD_READ_GATE_HOME'] = tempfile.mkdtemp()
+        os.environ['GRIP_FOR_READERS_HOME'] = tempfile.mkdtemp()
 
     def tearDown(self):
-        del os.environ['COLD_READ_GATE_HOME']
+        del os.environ['GRIP_FOR_READERS_HOME']
         sys.stdin, sys.stdout = sys.__stdin__, sys.__stdout__
 
     def run_main(self, mode, inp):

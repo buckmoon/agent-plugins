@@ -17,7 +17,7 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import gate  # noqa: E402
 
-HOME = '~/.codex/cold-read-gate'
+HOME = '~/.codex/grip-for-readers'
 NOTHING = {}  # Codex のフックは、何もしないときも JSON を返す
 ADD_FILE = '*** Add File: '
 READER_TASK = '標準入力で渡した文章を、指示どおりに試し読みしてください。道具は使わないでください。'
@@ -100,7 +100,7 @@ def ask(system_prompt, body):
                '-s', 'read-only', '-C', work,
                '-c', 'developer_instructions=' + json.dumps(system_prompt, ensure_ascii=False),
                '--output-last-message', out]
-        model = os.environ.get('COLD_READ_GATE_MODEL')
+        model = os.environ.get('GRIP_FOR_READERS_MODEL')
         if model:
             cmd += ['-m', model]
         cmd.append(READER_TASK)

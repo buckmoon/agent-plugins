@@ -41,12 +41,12 @@ class VisibleEventsTest(unittest.TestCase):
 
 class TargetTest(unittest.TestCase):
     def test_only_draft_writes_and_github_bodies_are_targets(self):
-        d = '/tmp/reader-first-drafts/'
+        d = '/tmp/grip-for-readers-drafts/'
         self.assertEqual(host.target_of('Write', {'file_path': d + 'a.md', 'content': 'x'}), ('draft', 'requester', 'x'))
-        self.assertEqual(host.target_of('Write', {'file_path': 'reader-first-drafts/a.md', 'content': 'x'}), ('draft', 'requester', 'x'))
+        self.assertEqual(host.target_of('Write', {'file_path': 'grip-for-readers-drafts/a.md', 'content': 'x'}), ('draft', 'requester', 'x'))
         self.assertEqual(host.target_of('Write', {'file_path': d + 'slack-1.md', 'content': 'x'}), ('draft', 'slack', 'x'))
         self.assertIsNone(host.target_of('Write', {'file_path': '/p/src/a.ts', 'content': 'x'}))
-        self.assertIsNone(host.target_of('Write', {'file_path': '/p/.claude/cold-read-gate/drafts/a.md', 'content': 'x'}))
+        self.assertIsNone(host.target_of('Write', {'file_path': '/p/.claude/grip-for-readers/drafts/a.md', 'content': 'x'}))
         self.assertEqual(host.target_of('mcp__github__add_issue_comment', {'body': 'b'}), ('post', 'github', 'b'))
         self.assertIsNone(host.target_of('Bash', {'command': 'ls'}))
 
@@ -54,7 +54,7 @@ class TargetTest(unittest.TestCase):
 class PreTest(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.mkdtemp()
-        os.environ['COLD_READ_GATE_HOME'] = self.dir
+        os.environ['GRIP_FOR_READERS_HOME'] = self.dir
         self.calls = 0
 
         def fake_reader(record, text, audience, h):
@@ -66,11 +66,11 @@ class PreTest(unittest.TestCase):
 
     def tearDown(self):
         g.run_reader = self.orig
-        del os.environ['COLD_READ_GATE_HOME']
+        del os.environ['GRIP_FOR_READERS_HOME']
 
     def inp(self, content, name='a.md'):
         return {'session_id': 's', 'tool_name': 'Write', 'transcript_path': '/nonexistent',
-                'tool_input': {'file_path': self.dir + '/reader-first-drafts/' + name, 'content': content}}
+                'tool_input': {'file_path': self.dir + '/grip-for-readers-drafts/' + name, 'content': content}}
 
     def test_short_draft_passes_without_reading(self):
         self.assertIsNone(g.pre(self.inp('短い'), host))
@@ -93,6 +93,32 @@ class PreTest(unittest.TestCase):
             raise RuntimeError('x')
         g.run_reader = boom
         self.assertIsNone(g.pre(self.inp('あ' * 500), host))
+
+
+class NamesTest(unittest.TestCase):
+    def test_records_live_under_the_plugin_name(self):
+        self.assertEqual(host.HOME, '~/.claude/grip-for-readers')
+
+    def test_grip_for_readers_zero_turns_the_gate_off(self):
+        calls = []
+        orig = g.run_reader
+        g.run_reader = lambda *a: calls.append(a) or {'reply_clear': True, 'stuck': []}
+        os.environ['GRIP_FOR_READERS_HOME'] = tempfile.mkdtemp()
+        payload = json.dumps({'session_id': 's', 'tool_name': 'Write', 'transcript_path': '/nonexistent',
+                              'tool_input': {'file_path': '/tmp/grip-for-readers-drafts/a.md', 'content': 'あ' * 500}})
+        try:
+            sys.stdin = io.StringIO(payload)
+            g.main(['x', 'pre'], host)
+            self.assertEqual(len(calls), 1)  # 環境変数がなければ試し読みする
+            os.environ['GRIP_FOR_READERS'] = '0'
+            sys.stdin = io.StringIO(payload)
+            g.main(['x', 'pre'], host)
+            self.assertEqual(len(calls), 1)  # 0 なら試し読みしない
+        finally:
+            g.run_reader = orig
+            os.environ.pop('GRIP_FOR_READERS', None)
+            del os.environ['GRIP_FOR_READERS_HOME']
+            sys.stdin = sys.__stdin__
 
 
 class MainGuardTest(unittest.TestCase):

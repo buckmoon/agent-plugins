@@ -1,5 +1,13 @@
 # 変更履歴
 
+## mock-notes 0.1.0（2026-11-09）
+
+最初の公開版。
+
+- スキル mock-notes：フィードバックを受けて HTML の UI モックの次の版を作るとき、変えた箇所・意見の分かれた点・仮に置いた点を、3種類の注記として画面に浮かべる手順と書き方
+- 部品 mock-notes.js：リーフと矢印付きの浮かぶ注記、注記の一覧、開き方の再生、文字での書き出し、検証（verify）。依存なし
+- 見本 example.html
+
 ## grip-for-readers 0.3.0（2026-09-26）
 
 - 名前を reader-first から grip-for-readers（Grip for Readers）に変えた。GripSpec と同じ Grip シリーズのスキルセットとして出すため

@@ -1,0 +1,22 @@
+{
+  "name": "mock-notes",
+  "version": "0.1.0",
+  "description": "HTML の UI モックの画面に「修正済み・要解決・要確認」の注記を浮かべ、フィードバックを受けた次の版で何が変わったかを見せるスキルと部品",
+  "author": {
+    "name": "buckmoon"
+  },
+  "homepage": "https://github.com/buckmoon/agent-plugins",
+  "repository": "https://github.com/buckmoon/agent-plugins",
+  "license": "MIT",
+  "keywords": ["mock", "prototype", "review", "feedback", "japanese"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Mock Notes",
+    "shortDescription": "モックの画面に、何が変わったか・何が決まっていないかを浮かべて見せる",
+    "longDescription": "フィードバックを受けて HTML の UI モックの次の版を作るとき、変えた箇所に「修正済み」、意見が分かれた点に「要解決」、作り手が仮に置いた点に「要確認」の注記を、矢印付きで画面の上に浮かべるスキルと部品。一覧・開き方の再生・文字での書き出し・注記の検証が付く。日本語話者向け。",
+    "developerName": "buckmoon",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://github.com/buckmoon/agent-plugins"
+  }
+}

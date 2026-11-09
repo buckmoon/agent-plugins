@@ -20,6 +20,7 @@ Claude Code と Codex の両方に入るプラグインを置く、公開リポ�
 
 ```bash
 python3 -m unittest discover -s plugins/grip-for-readers/tests
+python3 -m unittest discover -s plugins/mock-notes/tests
 python3 -m unittest discover -s scripts/tests
 python3 scripts/check.py
 ```

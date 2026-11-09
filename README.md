@@ -2,7 +2,7 @@
 
 Plugins for [Claude Code](https://code.claude.com/) and [Codex](https://developers.openai.com/codex) by buckmoon. The skills and hook prompts are written in Japanese and are meant for Japanese-speaking users.
 
-buckmoon が公開している、Claude Code と Codex の両方で使えるプラグインです。今は Grip for Readers の1つだけを置いています。Grip for Readers は、buckmoon の Markdown ビューア GripSpec と同じ「Grip」シリーズのスキルセットです。この README を読めば、自分に合うかを判断し、入れる手順に進めます。
+buckmoon が公開している、Claude Code と Codex の両方で使えるプラグインです。今は Grip for Readers と Mock Notes の2つを置いています。Grip for Readers は、buckmoon の Markdown ビューア GripSpec と同じ「Grip」シリーズのスキルセットです。この README を読めば、自分に合うかを判断し、入れる手順に進めます。
 
 ## Grip for Readers（grip-for-readers）
 
@@ -45,12 +45,21 @@ Codex では、このあと対話モード（`codex`）で `/hooks` を開き、
 
 なぜこの形なのか、どんな実験で確かめたか、まだ分かっていないことは [docs/design.md](docs/design.md) にあります。
 
+## Mock Notes（mock-notes）
+
+HTML の UI モックの画面の上に、「修正済み」「要解決」「要確認」の注記を矢印付きで浮かべるスキルと部品です。フィードバックを受けてAIがモックの次の版を作るとき、何が変わったか、何が決まっていないか、何を仮に置いたかを、読む人がモックを触りながら確かめられます。詳しくは [plugins/mock-notes/README.md](plugins/mock-notes/README.md) にあります。
+
+```text
+/plugin install mock-notes@buckmoon
+```
+
 ## 開発
 
 このリポジトリで作業するAI向けの決まりは [AGENTS.md](AGENTS.md) にあります。テストは次のとおりです。
 
 ```bash
 python3 -m unittest discover -s plugins/grip-for-readers/tests
+python3 -m unittest discover -s plugins/mock-notes/tests
 python3 -m unittest discover -s scripts/tests
 python3 scripts/check.py
 ```

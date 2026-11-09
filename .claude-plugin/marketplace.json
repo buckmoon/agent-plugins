@@ -15,6 +15,15 @@
         "name": "buckmoon"
       },
       "source": "./plugins/grip-for-readers"
+    },
+    {
+      "name": "mock-notes",
+      "description": "HTML の UI モックの画面に「修正済み・要解決・要確認」の注記を浮かべ、フィードバックを受けた次の版で何が変わったかを見せるスキルと部品",
+      "version": "0.1.0",
+      "author": {
+        "name": "buckmoon"
+      },
+      "source": "./plugins/mock-notes"
     }
   ]
 }
